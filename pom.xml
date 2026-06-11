@@ -8,7 +8,7 @@
   <artifactId>afon</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <packaging>pom</packaging>
-  
+
   <name>Afon</name>
   <description>Afon : A Java TUI Framework</description>
   <url>https://github.com/noahhhx/oysh</url>
@@ -20,8 +20,10 @@
       <organization>afon</organization>
     </developer>
   </developers>
-  
+
   <modules>
+    <module>afon-core</module>
+    <module>afon-examples</module>
   </modules>
 
   <scm>
@@ -31,9 +33,21 @@
   </scm>
 
   <properties>
-    <maven.compiler.source>17</maven.compiler.source>
-    <maven.compiler.target>17</maven.compiler.target>
+    <maven.compiler.source>21</maven.compiler.source>
+    <maven.compiler.target>21</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    
+    <jline.version>4.1.3</jline.version>
   </properties>
+  
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.jline</groupId>
+        <artifactId>jline-terminal</artifactId>
+        <version>${jline.version}</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
 
 </project>

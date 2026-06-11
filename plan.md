@@ -9,7 +9,7 @@ over time I guess.
 
 - Immediate mode: UI is snapshot of state. New concept to me, worth exploring.
 - Elm Architecture: Basically stolen from charm, but it seems nice to work with.
-- Java 17: Atleast initially, modern enough while still supporting LTS.
+- Java 21: Initial idea of 17 lasted long... wanted record in switch 
 - Terminal I/O: Think Jline is the only real option, can look into doing myself but ye...
 
 ## Structure
