@@ -7,6 +7,28 @@
   <groupId>io.github.noahhhx</groupId>
   <artifactId>afon</artifactId>
   <version>0.0.1-SNAPSHOT</version>
+  <packaging>pom</packaging>
+  
+  <name>Afon</name>
+  <description>Afon : A Java TUI Framework</description>
+  <url>https://github.com/noahhhx/oysh</url>
+
+  <developers>
+    <developer>
+      <name>Noah Giles</name>
+      <email>noah@noahhh.co.uk</email>
+      <organization>afon</organization>
+    </developer>
+  </developers>
+  
+  <modules>
+  </modules>
+
+  <scm>
+    <connection>scm:git:git://github.com/noahhhx/afon.git</connection>
+    <developerConnection>scm:git:ssh://github.com/noahhhx/afon.git</developerConnection>
+    <url>https://github.com/noahhhx/afon</url>
+  </scm>
 
   <properties>
     <maven.compiler.source>17</maven.compiler.source>
