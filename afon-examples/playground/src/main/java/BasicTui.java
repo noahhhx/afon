@@ -14,12 +14,14 @@ class BasicTui implements Tui<Model, Msg> {
     public Model update(Model model, Msg msg) {
         return switch (msg) {
             case ChangeText() -> new Model("t");
+            case UpdateText ut -> new Model(String.valueOf(ut.c()));
         };
     }
 
     @Override
     public void view(Model model, View<Msg> view) {
         view.text(model.name());
+        view.onAnyChar(UpdateText::new);
     }
     
     public static void main(String[] args) throws IOException, InterruptedException {
@@ -35,3 +37,4 @@ record Model(String name) {
 
 sealed interface Msg {}
 record ChangeText() implements Msg {}
+record UpdateText(char c) implements Msg {}

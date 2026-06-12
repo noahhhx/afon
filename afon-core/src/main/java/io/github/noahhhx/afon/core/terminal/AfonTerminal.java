@@ -8,6 +8,7 @@ import io.github.noahhhx.afon.core.input.InputEvent.KeyPress;
 import io.github.noahhhx.afon.core.input.Key;
 import java.io.Closeable;
 import java.io.IOException;
+import java.util.List;
 import org.jline.terminal.Terminal;
 import org.jline.terminal.Terminal.SignalHandler;
 import org.jline.terminal.TerminalBuilder;
@@ -19,6 +20,7 @@ import org.jline.utils.NonBlockingReader;
 public class AfonTerminal implements Closeable {
 
     private final Terminal terminal;
+    private volatile Boolean supportsSync = null;
 
     public AfonTerminal() throws IOException {
         this.terminal = TerminalBuilder.builder()
@@ -27,6 +29,86 @@ public class AfonTerminal implements Closeable {
               .build();
     }
 
+    public void enterRawMode() {
+        terminal.enterRawMode();
+    }
+
+    public void enterAlternateScreen() {
+        // CSI ? 1049 h
+        write("\033[?1049h");
+    }
+
+    public void leaveAlternateScreen() {
+        // CSI ? 1049 l
+        write("\033[?1049l");
+    }
+    
+    public void hideCursor() {
+        write("\033[?25l");
+    }
+    
+    public void write(String s) {
+        terminal.writer().write(s);
+    }
+    
+    public void flush() {
+        terminal.writer().flush();
+    }
+    
+    public int rows() {
+        return terminal.getRows();
+    }
+    
+    public int cols() {
+        return terminal.getColumns();
+    }
+
+    public void probeSynchronizedOutput() {
+        if (supportsSync != null) return;
+        supportsSync = detectSynchronizedOutput();
+    }
+    
+    public boolean supportsSyncUpdate() {
+        return supportsSync;
+    }
+
+    public void beginSynchronizedUpdate() {
+        if (supportsSync != null && supportsSync) {
+            terminal.writer().write("\033[?2026h");
+        }
+    }
+
+    public void endSynchronizedUpdate() {
+        if (supportsSync != null && supportsSync) {
+            terminal.writer().write("\033[?2026l");
+        }
+    }
+
+    private boolean detectSynchronizedOutput() {
+        try {
+            terminal.writer().write("\033[?2026$p");
+            terminal.writer().flush();
+
+            NonBlockingReader reader = terminal.reader();
+            int c = reader.read(100);
+            if (c != 27) return false;
+
+            StringBuilder sb = new StringBuilder();
+            sb.append((char) c);
+
+            int next;
+            while ((next = reader.read(20)) >= 0) {
+                sb.append((char) next);
+                if (next == 'y') break;
+                if (sb.length() > 20) break;
+            }
+
+            String resp = sb.toString();
+            return resp.contains("?2026") && !resp.contains(";4$");
+        } catch (IOException e) {
+            return false;
+        }
+    }
 
     /**
      * Reads input from the JLine terminal, and parses it to an Afon {@link InputEvent}.
@@ -34,13 +116,14 @@ public class AfonTerminal implements Closeable {
      * @return the single input event, or null if not recognised.
      */
     public InputEvent pollEvents() throws IOException {
-        int key = terminal.reader().read();
+        int key = terminal.reader().read(10);
         if (key < 0) {
             return null;
         }
 
         if (key == 3 || key == 4) {
             // Ctrl+c/d - exit
+            leaveAlternateScreen();
             System.exit(0);
         }
 
@@ -143,15 +226,6 @@ public class AfonTerminal implements Closeable {
             case 'F' -> new KeyPress(Key.END);
             default -> null;
         };
-    }
-
-    public void writeLine(String str) {
-        terminal.writer().println(str);
-        terminal.writer().flush();
-    }
-
-    public void enterRawMode() {
-        terminal.enterRawMode();
     }
 
     @Override
