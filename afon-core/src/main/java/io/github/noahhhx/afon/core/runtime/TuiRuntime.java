@@ -2,6 +2,7 @@ package io.github.noahhhx.afon.core.runtime;
 
 import io.github.noahhhx.afon.core.input.InputEvent;
 import io.github.noahhhx.afon.core.input.InputEvent.KeyChar;
+import io.github.noahhhx.afon.core.input.InputEvent.KeyPress;
 import io.github.noahhhx.afon.core.terminal.AfonTerminal;
 import java.io.IOException;
 import java.util.List;
@@ -34,18 +35,19 @@ class TuiRuntime<Model, Msg> {
             System.out.println("We are running..");
             
             // Read input events
-            List<InputEvent> events = terminal.pollEvents();
-            events.forEach(event -> {
-                switch (event) {
-                    case KeyChar ch -> {
-                        if (ch.ch() == 'q') {
-                            System.exit(0);
-                        } else {
-                            System.out.println(ch.ch());    
-                        }
-                    }
+            InputEvent event = terminal.pollEvents();
+            if (event == null) {
+                continue;
+            }
+            switch (event) {
+                case KeyChar ch -> {
+                    terminal.writeLine(String.valueOf(ch.ch()));
                 }
-            });
+                case KeyPress press -> {
+                    terminal.writeLine(String.valueOf(press));
+                }
+                default -> System.out.println("nothing");
+            }
             
             // Build view
             
