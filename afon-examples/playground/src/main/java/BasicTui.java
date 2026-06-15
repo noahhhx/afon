@@ -13,15 +13,26 @@ class BasicTui implements Tui<Model, Msg> {
     @Override
     public Model update(Model model, Msg msg) {
         return switch (msg) {
-            case ChangeText() -> new Model("t");
-            case UpdateText ut -> new Model(String.valueOf(ut.c()));
+            case IncrementCounter i -> new Model(i.i() + 1);
+            case DecrementCounter d -> new Model(d.i() - 1);
+            default -> new Model(model.count());
         };
     }
 
     @Override
     public void view(Model model, View<Msg> view) {
-        view.text(model.name());
-        view.onAnyChar(UpdateText::new);
+        view.onChar('+', new IncrementCounter(model.count()));
+        view.onChar('-', new DecrementCounter(model.count()));
+        view.verticalStack(
+              v -> v.text(""), // blank to just put things centrally sort of
+              v -> v.horizontalStack(
+                    h -> h.text(""),
+                    h -> h.text("Press '+' to increment: "),
+                    h -> h.text(String.valueOf(model.count())),
+                    h -> h.text("")
+              ),
+              v-> v.text("")
+        );
     }
     
     public static void main(String[] args) throws IOException, InterruptedException {
@@ -29,12 +40,12 @@ class BasicTui implements Tui<Model, Msg> {
     }
 }
 
-record Model(String name) {
+record Model(int count) {
     static Model initial() {
-        return new Model("test");
+        return new Model(0);
     }
 }
 
 sealed interface Msg {}
-record ChangeText() implements Msg {}
-record UpdateText(char c) implements Msg {}
+record IncrementCounter(int i) implements Msg { }
+record DecrementCounter(int i) implements Msg { }

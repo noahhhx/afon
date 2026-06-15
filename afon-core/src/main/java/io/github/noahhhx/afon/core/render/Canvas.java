@@ -17,8 +17,28 @@ public class Canvas {
     }
     
     public void write(String text) {
-        buffer.writeStr(cursorX, cursorY, text, style);
+        buffer.writeStr(bounds.x() + cursorX, bounds.y() + cursorY, text, style);
         cursorX += text.length();
+    }
+    
+    public int cursorX() {
+        return this.cursorX;
+    }
+    
+    public void setCursorX(int x) {
+        this.cursorX = x;
+    }
+    
+    public int cursorY() {
+        return this.cursorY;
+    }
+
+    public void setCursorY(int y) {
+        this.cursorY = y;
+    }
+
+    public Rect bounds() {
+        return this.bounds;
     }
     
     public void setStyle(CellStyle style) {
