@@ -121,6 +121,31 @@ public class View<Msg> {
         
     }
     
+    /**
+     * Create a button widget
+     * 
+     * @param id ID reference for the {@code WidgetState} Map.
+     * @param label Text to be displayed for the button in the UI.
+     * @param msg {@code Msg} to invoke when {@code Key} is pressed.
+     * @param key {@code Key} to invoke the supplied {@code Msg}.
+     * @param selected Should this button default to selected.
+     * @param handler Optional function handler for dynamic {@code Msg} generation. Activates only
+     *                on the selected button.
+     */
+    public void button(String id, String label, Msg msg, Key key, boolean selected, 
+          Function<InputEvent, Msg> handler) {
+        Button<Msg> btn = new Button<>(id, label, msg, key, selected, handler);
+        widgetState.put(id, btn);
+        canvas.renderWidget(btn);
+        for (InputEvent ev : events) {
+            Msg result = btn.tryActivate(ev);
+            if (result != null) {
+                messages.add(result);
+                return;
+            }
+        }
+    }
+    
     /** Enqueue message if any key was pressed this frame. */
     public void onAnyKey(Msg msg) {
         for (InputEvent ev: events) {

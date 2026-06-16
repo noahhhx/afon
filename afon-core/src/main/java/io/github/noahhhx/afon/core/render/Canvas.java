@@ -3,6 +3,7 @@ package io.github.noahhhx.afon.core.render;
 import io.github.noahhhx.afon.core.buffer.CellStyle;
 import io.github.noahhhx.afon.core.buffer.ScreenBuffer;
 import io.github.noahhhx.afon.core.geometry.Rect;
+import io.github.noahhhx.afon.core.widget.Widget;
 
 public class Canvas {
 
@@ -19,6 +20,10 @@ public class Canvas {
     public void write(String text) {
         buffer.writeStr(bounds.x() + cursorX, bounds.y() + cursorY, text, style);
         cursorX += text.length();
+    }
+    
+    public void renderWidget(Widget widget) {
+        widget.render(this);
     }
     
     public int cursorX() {
