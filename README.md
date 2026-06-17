@@ -15,7 +15,18 @@ There already exists the greats, [Charm](https://github.com/charmbracelet/bubble
 ## Examples
 
 When using any examples or writing code yourself, make sure to use a "real" terminal. Things
-like IntelliJ's run console don't work nicely with JLine Terminal. \
-TO help with this the [playground](./afon-examples/playground/src/main/java/BasicTui.java) 
-example can be run via a make target `make run-playground`. Just copy the `exec-maven-plugin` for
+like IntelliJ's run console don't work nicely with JLine Terminal.
+
+### Playground
+
+To help with this, the [playground](./afon-examples/playground/src/main/java/BasicTui.java) 
+example can be run via a make target `make run-playground`. Copy the `exec-maven-plugin` for
 your own projects.
+Expect this to be unstable, it is used for testing development. For working examples see below.
+
+### Counter
+
+Simply counter app with [tab] button switching. 
+```shell
+make run-counter
+```

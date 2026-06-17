@@ -34,7 +34,7 @@ public class ScreenBuffer {
     }
     
     public void flush(AfonTerminal terminal) {
-        terminal.write("\033[H");
+        terminal.write("\033[H"); // reset cursor
         if (!terminal.supportsSyncUpdate()) {
             flushSimple(terminal);
             return;

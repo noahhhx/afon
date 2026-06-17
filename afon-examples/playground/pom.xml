@@ -20,7 +20,7 @@
   </dependencies>
 
   <build>
-    <finalName>oysh-standalone-example</finalName>
+    <finalName>afon-playground-example</finalName>
     <plugins>
 
       <plugin>

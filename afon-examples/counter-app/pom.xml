@@ -1,35 +1,53 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  
   <parent>
-    <artifactId>afon-examples</artifactId>
     <groupId>io.github.noahhhx</groupId>
+    <artifactId>afon-examples</artifactId>
     <version>0.0.1-SNAPSHOT</version>
   </parent>
-  <modelVersion>4.0.0</modelVersion>
-  <artifactId>afon-playground</artifactId>
+
+  <artifactId>counter-app</artifactId>
+  
+  <dependencies>
+    <dependency>
+      <groupId>io.github.noahhhx</groupId>
+      <artifactId>afon-core</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+  </dependencies>
+
   <build>
-    <finalName>oysh-standalone-example</finalName>
+    <finalName>afon-counter-example</finalName>
     <plugins>
+
       <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
         <version>3.3.0</version>
         <configuration>
           <archive>
             <manifest>
-              <mainClass>BasicTui</mainClass>
+              <mainClass>CounterTui</mainClass>
             </manifest>
           </archive>
         </configuration>
       </plugin>
+
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>exec-maven-plugin</artifactId>
         <version>3.6.3</version>
         <configuration>
-          <mainClass>BasicTui</mainClass>
+          <mainClass>CounterTui</mainClass>
         </configuration>
       </plugin>
+
       <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-shade-plugin</artifactId>
         <version>3.5.1</version>
         <executions>
@@ -43,4 +61,5 @@
       </plugin>
     </plugins>
   </build>
+
 </project>
